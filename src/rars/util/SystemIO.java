@@ -546,22 +546,22 @@ public class SystemIO {
 
         // Reset all file information. Closes any open files and resets the arrays
         private static void resetFiles() {
-            for (int i = 0; i < SYSCALL_MAXFILES; i++) {
-                close(i);
-            }
-            if (outputWriter!=null){
-                try {
-                    outputWriter.close();
-                    outputWriter=null;
-                } catch (IOException e){
-                }
+            if (outputWriter!=null) { 
+		try {
+		    outputWriter.flush();
+		    outputWriter=null;
+		} catch (IOException e)	{
+		}
             }
             if (errorWriter!=null){
                 try {
-                    errorWriter.close();
+                    errorWriter.flush();
                     errorWriter=null;
                 } catch (IOException e){
                 }
+            }
+            for (int i = 0; i < SYSCALL_MAXFILES; i++) {
+                close(i);
             }
             setupStdio();
         }
